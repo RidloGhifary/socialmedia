@@ -11,6 +11,8 @@ import "dotenv/config";
 
 // TODO - IMPORT ROUTERS
 import { register } from "./controllers/auth.js";
+import authRoutes from "./routers/auth.js";
+import usersRoutes from "./routers/users.js";
 
 // TODO - CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
@@ -41,6 +43,8 @@ const upload = multer({ storage });
 
 // TODO - ROUTERS
 app.post("/auth/register", upload.single("picture"), register);
+app.use("/auth", authRoutes);
+app.use("/users", usersRoutes);
 
 // TODO - MONGOOSE SETUP
 const PORT = process.env.PORT || 5001;
