@@ -8,6 +8,11 @@ import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// ! - ADD DATA ONE TIME
+// import Post from "./models/Post.js";
+// import User from "./models/User.js";
+// import { users, posts } from "./data/index.js";
+
 import "dotenv/config";
 
 // TODO - IMPORT ROUTERS
@@ -58,7 +63,11 @@ app.use("/posts", postsRoutes);
 const PORT = process.env.PORT || 5001;
 mongoose
   .connect(process.env.MONGODB_STRING_URL)
-  .then(() =>
-    app.listen(PORT, () => console.log(`SERVER AND DATABASE RUNNING...`))
-  )
+  .then(() => {
+    app.listen(PORT, () => console.log(`SERVER AND DATABASE RUNNING...`));
+
+    // ! - ADD DATA ONE TIME
+    // User.insertMany(users);
+    // Post.insertMany(posts);
+  })
   .catch((err) => console.log(err));
