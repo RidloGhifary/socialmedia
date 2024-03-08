@@ -7,12 +7,16 @@ import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
 import { fileURLToPath } from "url";
+
 import "dotenv/config";
 
 // TODO - IMPORT ROUTERS
+import { verifyToken } from "./middlewares/user.js";
 import { register } from "./controllers/auth.js";
+import { createPost } from "./controllers/posts.js";
 import authRoutes from "./routers/auth.js";
 import usersRoutes from "./routers/users.js";
+import postsRoutes from "./routers/posts.js";
 
 // TODO - CONFIGURATIONS
 const __filename = fileURLToPath(import.meta.url);
@@ -41,10 +45,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// TODO - ROUTERS
+// TODO - ROUTERS WITH FILES
 app.post("/auth/register", upload.single("picture"), register);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
+
+// TODO - ROUTERS
 app.use("/auth", authRoutes);
 app.use("/users", usersRoutes);
+app.use("/posts", postsRoutes);
 
 // TODO - MONGOOSE SETUP
 const PORT = process.env.PORT || 5001;
